@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+
+    environment {
+        GIT_BRANCH = 'main' // Change the default branch to 'main'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout code from the 'main' branch
+                git branch: "${GIT_BRANCH}", url: 'https://github.com/your-username/your-repository.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Build steps, e.g., running a build script, etc.
+                echo "Building project from the ${GIT_BRANCH} branch."
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run tests, if applicable
+                echo "Running tests on ${GIT_BRANCH} branch."
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Deployment steps, if applicable
+                echo "Deploying from the ${GIT_BRANCH} branch."
+            }
+        }
+    }
+}
