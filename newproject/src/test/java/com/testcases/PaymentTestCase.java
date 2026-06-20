@@ -8,10 +8,10 @@ import com.pages.LoginPage;
 import com.pages.PaymentPage;
 import com.utility.ReadExcelFile;
 
-@Test
+
 public class PaymentTestCase extends BaseTest {
     String filename = System.getProperty("user.dir") + "\\TestData\\Book1.xlsx";
-
+    @Test
     public void nowpaying() {
         try {
             System.out.println("Starting PaymentTestCase");

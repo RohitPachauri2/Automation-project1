@@ -1,0 +1,367 @@
+
+Sure. I'll assume you're on Windows, have your Selenium Maven project downloaded locally, and have just created:
+
+newproject
+│
+├── Dockerfile
+├── .dockerignore
+├── pom.xml
+├── testng.xml
+├── src/
+├── Configurations/
+└── TestData/
+
+Now let's go from Step 5 onward, including exactly where to run each command.
+
+Step 5: Open Terminal in Your Project Folder
+
+Navigate to your project folder in File Explorer.
+
+Example:
+
+C:\Users\Rohit\Documents\newproject
+Option 1 (Recommended)
+
+Click the address bar and type:
+
+cmd
+
+Press Enter.
+
+A Command Prompt opens directly in that folder.
+
+You should see:
+
+C:\Users\Rohit\Documents\newproject>
+Option 2
+
+Right-click inside the folder:
+
+Open in Terminal
+Step 6: Verify Docker Is Installed
+
+In that Command Prompt run:
+
+docker --version
+
+Expected:
+
+Docker version 27.x.x
+
+If you get:
+
+'docker' is not recognized
+
+Docker is not installed or Docker Desktop isn't running.
+
+Step 7: Verify Docker Desktop Is Running
+
+Open:
+
+Docker Desktop
+
+Wait until it shows:
+
+Engine running
+
+Then in Command Prompt run:
+
+docker run hello-world
+
+Expected:
+
+Hello from Docker!
+
+This confirms Docker is working.
+
+Step 8: Build Your Docker Image
+
+Still inside:
+
+C:\Users\Rohit\Documents\newproject>
+
+Run:
+
+docker build -t selenium-tests .
+
+Notice the dot:
+
+.
+
+means:
+
+Current folder
+
+Docker will:
+
+Read Dockerfile
+Copy project files
+Download Maven dependencies
+Create image
+
+You will see output like:
+
+Step 1/5 : FROM maven...
+Step 2/5 : WORKDIR /app
+Step 3/5 : COPY . .
+Step 4/5 : RUN mvn dependency:resolve
+Successfully built ...
+Successfully tagged selenium-tests
+
+This may take several minutes the first time.
+
+Step 9: Verify Image Was Created
+
+In the same Command Prompt:
+
+docker images
+
+Expected:
+
+REPOSITORY        TAG       IMAGE ID
+selenium-tests    latest    abc123
+
+If you see:
+
+selenium-tests
+
+your image was built successfully.
+
+Step 10: Run Container
+
+Still in the same Command Prompt:
+
+docker run selenium-tests
+
+Docker will:
+
+Start container
+↓
+Run Maven
+↓
+Execute TestNG
+↓
+Run Selenium Tests
+
+You should see output similar to:
+
+[INFO] Running TestSuite
+
+PASSED: LoginTest
+PASSED: CheckoutTest
+
+BUILD SUCCESS
+If Tests Fail
+
+Common error:
+
+chrome not reachable
+
+or
+
+Cannot find Chrome binary
+
+This means your framework uses:
+
+new ChromeDriver();
+
+and Chrome is missing inside Docker.
+
+In that case, show me your driver setup class and I'll provide the correct Chrome-enabled Dockerfile.
+
+Step 11: Create Docker Hub Account
+
+Go to:
+
+Docker Hub
+
+Create an account.
+
+Example:
+
+Username: rohitautomation
+Step 12: Login to Docker Hub
+
+Open Command Prompt and run:
+
+docker login
+
+Enter:
+
+Username
+Password
+
+Expected:
+
+Login Succeeded
+Step 13: Tag Your Image
+
+Suppose:
+
+Docker Hub username:
+
+rohitautomation
+
+Run:
+
+docker tag selenium-tests rohitautomation/selenium-tests:v1
+
+Verify:
+
+docker images
+
+You should now see:
+
+selenium-tests
+
+rohitautomation/selenium-tests
+Step 14: Push Image to Docker Hub
+
+Run:
+
+docker push rohitautomation/selenium-tests:v1
+
+Docker uploads the image.
+
+Expected:
+
+Layer already exists
+Pushed
+latest: digest: ...
+
+Now your image is available online.
+
+Step 15: Install Minikube (Kubernetes)
+
+Install:
+
+Minikube Start Guide
+
+Install:
+
+kubectl Installation Guide
+
+Step 16: Verify Kubernetes Installation
+
+Open a NEW Command Prompt.
+
+Run:
+
+kubectl version --client
+
+Expected:
+
+Client Version: v1.xx
+
+Then:
+
+minikube version
+
+Expected:
+
+minikube version: v1.xx
+Step 17: Start Kubernetes Cluster
+
+Run:
+
+minikube start
+
+This may take 5–10 minutes.
+
+Expected:
+
+Done! kubectl is now configured
+Step 18: Verify Cluster
+
+Run:
+
+kubectl get nodes
+
+Expected:
+
+NAME       STATUS
+minikube   Ready
+
+Ready = Kubernetes is working.
+
+Step 19: Create Kubernetes Job File
+
+Inside your project folder create:
+
+selenium-job.yaml
+
+Same location as:
+
+pom.xml
+Dockerfile
+testng.xml
+
+Example:
+
+apiVersion: batch/v1
+kind: Job
+
+metadata:
+  name: selenium-tests
+
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+
+      containers:
+      - name: selenium-tests
+        image: rohitautomation/selenium-tests:v1
+Step 20: Deploy Job
+
+Open Command Prompt in project folder.
+
+Run:
+
+kubectl apply -f selenium-job.yaml
+
+Expected:
+
+job.batch/selenium-tests created
+Step 21: Check Job Status
+
+Run:
+
+kubectl get jobs
+
+Example:
+
+NAME             COMPLETIONS
+selenium-tests   1/1
+Step 22: Check Pod
+
+Run:
+
+kubectl get pods
+
+Example:
+
+selenium-tests-abc123
+Step 23: View Test Execution Logs
+
+Copy pod name and run:
+
+kubectl logs selenium-tests-abc123
+
+You should see:
+
+Running TestNG
+Executing Tests
+PASSED LoginTest
+PASSED SearchTest
+BUILD SUCCESS
+Before You Continue
+
+The most important thing now is to determine whether your Selenium tests use Chrome. If they do, the simple Dockerfile will likely fail.
+
+Please paste:
+
+your pom.xml
+the class where you create ChromeDriver or WebDriver
+
+and I can give you the exact Dockerfile that will actually run your Selenium tests inside Docker.

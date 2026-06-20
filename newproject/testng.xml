@@ -10,7 +10,8 @@
      <!--<class name="com.testcases.LoginTestCase"/>--> 
       <!--<class name="com.testcases.SearchTestCase"/>--> 
       <!--<class name="com.testcases.DashboardTestCase"/>-->
-      <class name="com.testcases.PaymentTestCase"></class>
+      <!--<class name="com.testcases.PaymentTestCase"></class>-->
+      <class name="com.testcases.Navigatetonewtab"></class>
       
       
       

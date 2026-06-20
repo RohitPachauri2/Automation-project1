@@ -3,13 +3,11 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.testcases.PaymentTestCase">
+      <class name="com.testcases.newseleniumgrid">
         <methods>
-          <include name="setup"/>
-          <include name="shutdown"/>
-          <include name="nowpaying"/>
+          <include name="test1"/>
         </methods>
-      </class> <!-- com.testcases.PaymentTestCase -->
+      </class> <!-- com.testcases.newseleniumgrid -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

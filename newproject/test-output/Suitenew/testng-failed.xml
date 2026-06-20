@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite thread-count="2" parallel="methods" name="Failed suite [Suitenew]" guice-stage="DEVELOPMENT">
+  <test thread-count="2" parallel="methods" name="Test123parallel(failed)">
+    <classes>
+      <class name="com.testcases.newseleniumgrid">
+        <methods>
+          <include name="test3"/>
+          <include name="test2"/>
+          <include name="test1"/>
+        </methods>
+      </class> <!-- com.testcases.newseleniumgrid -->
+    </classes>
+  </test> <!-- Test123parallel(failed) -->
+</suite> <!-- Failed suite [Suitenew] -->
