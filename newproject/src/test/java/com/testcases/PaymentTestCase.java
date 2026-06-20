@@ -11,7 +11,7 @@ import com.utility.ReadExcelFile;
 
 public class PaymentTestCase extends BaseTest {
     String filename = System.getProperty("user.dir") + "\\TestData\\Book1.xlsx";
-    @Test
+    @Test 
     public void nowpaying() {
         try {
             System.out.println("Starting PaymentTestCase");
